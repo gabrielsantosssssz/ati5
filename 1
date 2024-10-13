@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Tabela</title>
+    <style>
+        td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+            color: black;
+        }
+h1{
+  color: #755b9e;
+}
+    </style>
+</head>
+<body>
+    <h1 id="pt">TABELA</h1>
+    <div id="tabela-container"></div>
+
+    <script> 
+      function gerarTabela() {
+        let linhas = parseInt(prompt("Escreva a quantidade de linhas:"));
+        let colunas = parseInt(prompt("Escreva a quantidade de colunas:"));
+
+        if (isNaN(linhas) || isNaN(colunas) || linhas <= 0 || colunas <= 0) {
+            alert("Por favor, insira números válidos.");
+            return;
+        }
+
+        let tabela = document.createElement('table');
+
+        for (let i = 0; i < linhas; i++) {
+            let linha = document.createElement('tr'); 
+            for (let j = 0; j < colunas; j++) {
+                let celula = document.createElement('td');
+                if (j % 2 === 0) {
+                    celula.style.backgroundColor = "green";
+                } else {
+                    celula.style.backgroundColor = "yellow";
+                }
+                celula.innerText = `(${i + 1}, ${j + 1})`;
+                linha.appendChild(celula); 
+            }
+            tabela.appendChild(linha);
+        }
+
+        let container = document.getElementById('tabela-container');
+        container.innerHTML = '';
+        container.appendChild(tabela);
+      }
+
+      gerarTabela();
+    </script>
+</body>
+</html>
