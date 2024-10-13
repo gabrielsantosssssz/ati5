@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            background: #ccc;
+            color: #000;
+            line-height: 30px;
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px auto;
+        }
+        th {
+            background: #000033;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+        td {
+            background: #000066;
+            font-size: 14px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="resp"></div>
+    <script>
+        var vet_nomes = [];
+        var nome = "";
+
+        while (true) {
+            nome = prompt("Digite um nome:");
+            if (nome !== null && nome.trim() !== "") {
+                vet_nomes.push(nome);  
+            } else {
+                break; 
+            }
+        }
+
+        if (vet_nomes.length > 0) {
+            var conteudo = "<table>";
+            conteudo += "<tr><th>Índice</th><th>Nomes</th></tr>";
+            for (var j = 0; j < vet_nomes.length; j++) {
+                conteudo += "<tr>";
+                conteudo += "<td>" + (j + 1) + "</td>";
+                conteudo += "<td>" + vet_nomes[j] + "</td>";
+                conteudo += "</tr>";
+            }
+            conteudo += "</table>";
+            document.getElementById("resp").innerHTML = conteudo;
+        } else {
+            document.getElementById("resp").innerHTML = "<p>Nenhum nome foi inserido.</p>";
+        }
+    </script>
+</body>
+</html>
