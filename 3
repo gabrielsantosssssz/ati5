@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formulario</title>
+
+    <script>
+        function transformarMaiuscula() {
+            var texto = document.querySelector("#campoTexto").value;
+            document.querySelector("#resultado").innerHTML = texto.toUpperCase();
+        }
+    
+        function separarPalavras() {
+            var texto = document.querySelector("#campoTexto").value;
+            var palavras = texto.split(" ");
+            var resultado = palavras.join("<br>");
+            document.querySelector("#resultado").innerHTML = resultado;
+        }
+    </script>
+    
+</head>
+<body>
+    <form>
+        <label for="campoTexto">Digite uma palavra ou frase:</label>
+        <input type="text" id="campoTexto">
+        <button type="button" onclick="transformarMaiuscula()">Maiúscula</button>
+        <button type="button" onclick="separarPalavras()">Separar</button>
+        <div id="resultado"></div>
+
+    </form>
+     
+</body>
+</html>
