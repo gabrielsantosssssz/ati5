@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abas com Cronômetro, Slide Show e Tabuada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 400px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .abas {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+        }
+        .aba {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            transition: background-color 0.3s ease;
+        }
+        .aba:hover {
+            background-color: #e0e0e0;
+        }
+        .aba.ativa {
+            background-color: white;
+            font-weight: bold;
+            border-bottom: 2px solid white;
+        }
+        .conteudo {
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        #cronometro {
+            font-size: 30px;
+            text-align: center;
+        }
+        .slideshow-container {
+            position: relative;
+            text-align: center;
+        }
+        .slide {
+            display: none;
+        }
+        .slide img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .anterior, .proximo {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+            user-select: none;
+            transform: translateY(-50%);
+        }
+        .anterior {
+            left: 0;
+        }
+        .proximo {
+            right: 0;
+        }
+        #tabuadaResultado {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="abas">
+            <div class="aba ativa" id="aba1" onclick="mostrarConteudo(1)">Aba 1</div>
+            <div class="aba" id="aba2" onclick="mostrarConteudo(2)">Aba 2</div>
+            <div class="aba" id="aba3" onclick="mostrarConteudo(3)">Aba 3</div>
+        </div>
+        
+        <div class="conteudo" id="conteudo1">
+            <div id="cronometro">0</div>
+        </div>
+        
+        <div class="conteudo" id="conteudo2" style="display: none;">
+            <div class="slideshow-container">
+                <div class="slide">
+                    <img src="https://via.placeholder.com/400x200?text=Imagem+1" alt="Imagem 1">
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/400x200?text=Imagem+2" alt="Imagem 2">
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/400x200?text=Imagem+3" alt="Imagem 3">
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/400x200?text=Imagem+4" alt="Imagem 4">
+                </div>
+                <div class="slide">
+                    <img src="https://via.placeholder.com/400x200?text=Imagem+5" alt="Imagem 5">
+                </div>
+
+                <a class="anterior" onclick="mudarSlide(-1)">&#10094;</a>
+                <a class="proximo" onclick="mudarSlide(1)">&#10095;</a>
+            </div>
+        </div>
+        
+        <div class="conteudo" id="conteudo3" style="display: none;">
+            <input type="number" id="numeroTabuada" placeholder="Digite um número">
+            <button onclick="calcularTabuada()">Calcular Tabuada</button>
+            <div id="tabuadaResultado"></div>
+        </div>
+    </div>
+
+    <script>
+        function mostrarConteudo(aba) {
+            document.querySelector("#conteudo1").style.display = "none";
+            document.querySelector("#conteudo2").style.display = "none";
+            document.querySelector("#conteudo3").style.display = "none";
+            document.querySelector("#aba1").classList.remove("ativa");
+            document.querySelector("#aba2").classList.remove("ativa");
+            document.querySelector("#aba3").classList.remove("ativa");
+            document.querySelector("#conteudo" + aba).style.display = "block";
+            document.querySelector("#aba" + aba).classList.add("ativa");
+        }
+
+        let segundos = 0;
+        setInterval(() => {
+            segundos++;
+            document.querySelector("#cronometro").innerHTML = segundos;
+        }, 1000);
+
+        let indiceSlide = 1;
+        mostrarSlides(indiceSlide);
+
+        function mudarSlide(n) {
+            mostrarSlides(indiceSlide += n);
+        }
+
+        function mostrarSlides(n) {
+            let slides = document.querySelectorAll(".slide");
+            if (n > slides.length) {
+                indiceSlide = 1;
+            }
+            if (n < 1) {
+                indiceSlide = slides.length;
+            }
+            slides.forEach(slide => slide.style.display = "none");
+            slides[indiceSlide - 1].style.display = "block";
+        }
+
+        function calcularTabuada() {
+            const numero = document.querySelector("#numeroTabuada").value;
+            let resultado = "";
+            for (let i = 1; i <= 10; i++) {
+                resultado += `${numero} x ${i} = ${numero * i}<br>`;
+            }
+            document.querySelector("#tabuadaResultado").innerHTML = resultado;
+        }
+    </script>
+
+</body>
+</html>
