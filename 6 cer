@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cr</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 400px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 48%;
+            padding: 10px;
+            margin: 10px 1%;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        button#cadastrar {
+            background-color: #4CAF50; /* Verde */
+        }
+        button#mostrar {
+            background-color: #2196F3; /* Azul */
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .aprovado {
+            color: green;
+            font-weight: bold;
+        }
+        .reprovado {
+            color: red;
+            font-weight: bold;
+        }
+        .avaliacao-final {
+            color: orange;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Cadastro de Alunos</h2>
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="text" id="rgm" placeholder="RGM" required>
+        <input type="number" id="nota_parcial" placeholder="Nota Parcial (máx. 2)" max="2" min="0" step="0.01" required>
+        <input type="number" id="nota_exercicios" placeholder="Nota Exercícios (máx. 1)" max="1" min="0" step="0.01" required>
+        <input type="number" id="nota_projeto" placeholder="Nota Projeto (máx. 2)" max="2" min="0" step="0.01" required>
+        <input type="number" id="nota_regimental" placeholder="Nota Regimental (máx. 5)" max="5" min="0" step="0.01" required>
+        <button id="cadastrar" onclick="cadastrarAluno()">Cadastrar</button>
+        <button id="mostrar" onclick="mostrarDados()">Mostrar Dados</button>
+
+        <table id="tabela" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>RGM</th>
+                    <th>Nota Final</th>
+                    <th>Conceito</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const nomes = [];
+        const rgms = [];
+        const notas_p = [];
+        const notas_exer = [];
+        const notas_proj = [];
+        const notas_reg = [];
+
+        function cadastrarAluno() {
+            const nome = document.getElementById("nome").value;
+            const rgm = document.getElementById("rgm").value;
+            const nota_parcial = parseFloat(document.getElementById("nota_parcial").value);
+            const nota_exercicios = parseFloat(document.getElementById("nota_exercicios").value);
+            const nota_projeto = parseFloat(document.getElementById("nota_projeto").value);
+            const nota_regimental = parseFloat(document.getElementById("nota_regimental").value);
+
+            if (nome && rgm && !isNaN(nota_parcial) && !isNaN(nota_exercicios) && !isNaN(nota_projeto) && !isNaN(nota_regimental)) {
+                nomes.push(nome);
+                rgms.push(rgm);
+                notas_p.push(nota_parcial);
+                notas_exer.push(nota_exercicios);
+                notas_proj.push(nota_projeto);
+                notas_reg.push(nota_regimental);
+                limparCampos();
+            } else {
+                alert("Por favor, preencha todos os campos corretamente.");
+            }
+        }
+
+        function limparCampos() {
+            document.getElementById("nome").value = "";
+            document.getElementById("rgm").value = "";
+            document.getElementById("nota_parcial").value = "";
+            document.getElementById("nota_exercicios").value = "";
+            document.getElementById("nota_projeto").value = "";
+            document.getElementById("nota_regimental").value = "";
+        }
+
+        function mostrarDados() {
+            const tabelaBody = document.getElementById("tabelaBody");
+            tabelaBody.innerHTML = ""; // Limpa a tabela
+
+            for (let i = 0; i < nomes.length; i++) {
+                const notaFinal = calcularNotaFinal(notas_p[i], notas_exer[i], notas_proj[i], notas_reg[i]);
+                const conceito = calcularConceito(notaFinal);
+
+                const novaLinha = document.createElement("tr");
+                novaLinha.innerHTML = `
+                    <td>${nomes[i]}</td>
+                    <td>${rgms[i]}</td>
+                    <td>${notaFinal.toFixed(2)}</td>
+                    <td class="${conceito.toLowerCase().replace(' ', '-')}">${conceito}</td>
+                `;
+                tabelaBody.appendChild(novaLinha);
+            }
+
+            document.getElementById("tabela").style.display = "table"; // Exibe a tabela
+        }
+
+        function calcularNotaFinal(nota1, nota2, nota3, nota4) {
+            return nota1 + nota2 + nota3 + nota4;
+        }
+
+        function calcularConceito(notaFinal) {
+            if (notaFinal >= 6) {
+                return "Aprovado";
+            } else if (notaFinal >= 3) {
+                return "Avaliação Final";
+            } else {
+                return "Reprovado";
+            }
+        }
+    </script>
+
+</body>
+</html>
